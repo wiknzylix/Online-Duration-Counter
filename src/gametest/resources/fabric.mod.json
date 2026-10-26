@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "odc-test",
+  "version": "1.0.0",
+  "name": "ODC Client Smoke Tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": ["net.wiknzylix.playtimetogether.ODCClientGameTest"]
+  },
+  "depends": {
+    "playtime_together": "*",
+    "fabric-client-gametest-api-v1": "*"
+  }
+}
