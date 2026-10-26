@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "net.wiknzylix.playtimetogether.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["ServerSaveMixin", "PlayerRemoveMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

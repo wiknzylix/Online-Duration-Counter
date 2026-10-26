@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "playtime_together",
+  "version": "${version}",
+  "name": "Online Duration Counter (ODC)",
+  "description": "Server-authoritative online duration, shared history and a quiet vanilla-style sidebar. 无需作弊的全服统一在线时长统计。",
+  "authors": ["GPT-6.1 Sol", "wiknzylix"],
+  "license": "MIT",
+  "icon": "assets/playtime_together/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["net.wiknzylix.playtimetogether.PlaytimeTogether"],
+    "client": ["net.wiknzylix.playtimetogether.client.PlaytimeClient"],
+    "modmenu": ["net.wiknzylix.playtimetogether.client.PlaytimeModMenu"]
+  },
+  "mixins": [
+    "playtime_together.mixins.json",
+    { "config": "playtime_together.client.mixins.json", "environment": "client" }
+  ],
+  "depends": { "fabricloader": ">=0.18.4", "minecraft": "1.21.11", "java": ">=21", "fabric-api": "*" },
+  "suggests": { "modmenu": ">=17.0.0" }
+}
