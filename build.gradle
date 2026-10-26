@@ -1,0 +1,81 @@
+plugins {
+    id 'fabric-loom' version '1.14.10'
+    id 'maven-publish'
+}
+
+version = project.mod_version + '+mc1.21.11'
+group = project.maven_group
+base { archivesName = project.archives_base_name }
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.terraformersmc.com/releases/' }
+}
+
+loom {
+    splitEnvironmentSourceSets()
+    mods {
+        playtime_together {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = 'odc-test'
+        enableGameTests = false
+        enableClientGameTests = true
+        eula = false
+    }
+}
+
+if (project.hasProperty('carpetSmokeJar')) {
+    // Carpet uses a deliberately simulated connection. Fabric's optional test-only
+    // packet synchronizer does not support that lower-level fake connection.
+    tasks.named('runClientGameTest') {
+        jvmArgs '-Dfabric.client.gametest.disableNetworkSynchronizer=true'
+    }
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.21.11'
+    mappings 'net.fabricmc:yarn:1.21.11+build.1:v2'
+    modImplementation 'net.fabricmc:fabric-loader:0.18.4'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.141.4+1.21.11'
+    modCompileOnly 'com.terraformersmc:modmenu:17.0.0'
+    modLocalRuntime 'com.terraformersmc:modmenu:17.0.0'
+    if (project.hasProperty('qbSmokeJar')) {
+        modLocalRuntime files(project.property('qbSmokeJar'))
+        modLocalRuntime 'net.fabricmc:fabric-language-kotlin:1.13.12+kotlin.2.4.0'
+        // A local production mod is remapped by Loom, but its nested Quartz jar
+        // is not added to the development JVM's normal classpath in this setup.
+        runtimeOnly files(zipTree(file(project.property('qbSmokeJar'))).matching {
+            include 'META-INF/jars/quartz-*.jar'
+        })
+    }
+    if (project.hasProperty('carpetSmokeJar')) {
+        modLocalRuntime files(project.property('carpetSmokeJar'))
+    }
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withSourcesJar()
+}
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand 'version': project.version }
+}
+test { useJUnitPlatform() }
+jar { from('LICENSE') { rename { "${it}_${base.archivesName.get()}" } } }

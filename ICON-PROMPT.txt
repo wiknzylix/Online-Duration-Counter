@@ -1,0 +1,4 @@
+Tool: built-in image_gen.imagegen
+transparent_background: true
+
+Use case: logo-brand. Asset type: Mod Menu square icon for the Minecraft Fabric mod 'Online Duration Counter (ODC)'. Create one finished clean restrained pixel-art icon, transparent background, square canvas, centered large readable clock motif integrated with three short leaderboard rows. Original vanilla Minecraft UI aesthetic, simple crisp square pixels, flat muted charcoal and warm off-white, tiny low saturation sage green accent only. No gradients, no bloom, no bright saturated colors, no 3D, no text or letters, no logos from existing brands, no border or backdrop. Strong silhouette that remains readable as a 32px mod icon. Transparent pixels surrounding the icon. Polished sparse design, clock takes most of the icon.
